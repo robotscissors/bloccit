@@ -40,9 +40,50 @@ let(:my_question) {Question.create!(title: RandomData.random_sentence, body: Ran
 
   describe "GET #edit" do
     it "returns http success" do
-      get :edit
+      get :edit, {id: my_question.id}
       expect(response).to have_http_status(:success)
+    end
+
+    it "it reneders edit template" do
+      get :edit, {id: my_question.id}
+      expect(response).to render_template :edit
     end
   end
 
+  describe "PUT update" do
+    it "updates post with exected attributes" do
+      new_title = RandomData.random_sentence
+      new_body = RandomData.random_paragraph
+      new_resolved = true
+
+      put :update, id: my_question.id, question: {title: new_title, body: new_body, resovled: new_resolved}
+
+      updated_question = assigns (:question)
+      expect(updated_question.id).to eq my_question.id
+      expect(updated_question.title).to eq new_title
+      expect(updated_question.body).to eq new_body
+
+    end
+    it "redirects to the updated question" do
+       new_title = RandomData.random_sentence
+       new_body = RandomData.random_paragraph
+       new_resolved = true
+
+       put :update, id: my_question.id, question: {title: new_title, body: new_body, resolved: new_resolved}
+       expect(response).to redirect_to my_question
+     end
+  end
+
+  describe "DELETE destroy" do
+    it "deletes the post" do
+      delete :destroy, {id: my_question}
+      count = Question.where(id: my_question.id).size
+      expect(count).to eq 0
+    end
+    it "redirects to posts" do
+      delete :destroy, {id: my_question}
+      expect(response).to redirect_to questions_path
+    end
+
+  end
 end
