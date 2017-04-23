@@ -31,6 +31,24 @@ RSpec.describe User, type: :model do
     it "should be an invalid user due to blank email" do
       expect(user_with_invalid_email).to_not be_valid
     end
+  end
+
+  describe "capitalization" do
+    let(:user_many_names) { User.create!(name: "christopher JoHN BAZIN", email: "user@bloccit1.com", password: "password") }
+    let(:user_all_caps) { User.new(name: "CHRISTOPHER BAZIN", email: "user@bloccit2.com", password: "password") }
+    let(:user_all_lowercase) { User.new(name: "christopher bazin the third", email: "user@bloccit3.com", password: "password") }
+
+
+    it "should be properly capilatized" do
+      user_many_names.save
+      user_all_caps.save
+      user_all_lowercase.save
+
+      expect(user_many_names).to have_attributes(name: "Christopher John Bazin", email: "user@bloccit1.com")
+      expect(user_all_caps).to have_attributes(name: "Christopher Bazin", email: "user@bloccit2.com")
+      expect(user_all_lowercase).to have_attributes(name: "Christopher Bazin The Third", email: "user@bloccit3.com")
+    end
+
 
   end
 
