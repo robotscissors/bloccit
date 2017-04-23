@@ -7,6 +7,7 @@ require 'rails_helper'
     let(:topic) { Topic.create!(name: name, description: description) }
 
     it { is_expected.to have_many(:posts) }
+    it { is_expected.to have_many(:sponsoredposts)}
 
     describe "attributes" do
        it "has name, description, and public attributes" do
@@ -18,5 +19,5 @@ require 'rails_helper'
         end
     end
 
-  
+
 end
