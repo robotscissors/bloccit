@@ -10,6 +10,7 @@ RSpec.describe UsersController, type: :controller do
        }
      end
 
+
      describe "GET new" do
        it "returns http success" do
          get :new
