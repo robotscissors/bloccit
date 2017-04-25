@@ -9,7 +9,7 @@ class PostsController < ApplicationController
 
   def new
     @topic = Topic.find(params[:topic_id])
-     @post = Post.new
+    @post = Post.new
   end
 
   def create
@@ -46,24 +46,31 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = Post.find(params[:id])
-    if @post.destroy
-      flash[:notice] = "\"#{@post.title}\" was deleted succesfully."
-      redirect_to @post.topic
-    else
-      flash.now[:alert] = "There was an issue deleting the post."
-      render :show
-    end
+
+      @post = Post.find(params[:id])
+      unless current_user.moderator?
+        if @post.destroy
+          flash[:notice] = "\"#{@post.title}\" was deleted succesfully."
+          redirect_to @post.topic
+        else
+          flash.now[:alert] = "There was an issue deleting the post."
+          render :show
+        end
+      else
+        flash[:alert] = "You are not authorized for that."
+        render :show
+      end
   end
 
   private
   def post_params
     params.require(:post).permit(:title, :body)
   end
+
   def authorize_user
     post = Post.find(params[:id])
 
-    unless current_user == post.user || current_user.admin?
+    unless current_user == post.user || current_user.admin? || current_user.moderator?
       flash[:alert] = "You must be an admin to do that."
       redirect_to [post.topic, post]
     end
