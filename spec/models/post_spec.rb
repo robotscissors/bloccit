@@ -72,6 +72,18 @@ RSpec.describe Post, type: :model do
         expect(post.rank).to eq (old_rank - 1)
       end
     end
-    
+   end
+
+   describe "upvoting after create" do
+     it "triggers after_create on creation" do
+       post = topic.posts.new(title: RandomData.random_sentence, body: RandomData.random_paragraph, user: user)
+       expect(post).to receive(:create_vote)
+       post.save
+     end
+
+     it "increases the rank by one" do
+       expect(post.up_votes).to eq(1)
+     end
+
    end
 end
