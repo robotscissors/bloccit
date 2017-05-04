@@ -77,7 +77,7 @@ RSpec.describe Post, type: :model do
    end
    describe "favorite after create" do
      it "call the make_favorite method" do
-       expect(post).to receive(:make_favorite)
+       expect(post.favorites.count).to eq(1)
        post.save!
      end
    end
