@@ -106,4 +106,28 @@ RSpec.describe User, type: :model do
       expect(known_user.avatar_url(48)).to eq(expected_gravatar)
     end
   end
+
+  describe "#has_posts?" do
+    it "returns true if user has posts" do
+      @new_user = User.create!(name: "Christopher", email: "this@cool.com", password: "blochead", password_confirmation: "blochead")
+      @new_topic = Topic.create!(name: "Test topic", public: true, description: "This is a cool topic")
+      @new_post = Post.create!(title: "This is a great title", body: "This is really the best title I have ever seen!", user_id: @new_user.id, topic_id: @new_topic.id, rank: 0.0)
+
+      expect(@new_user.has_posts?).to be(true)
+
+    end
+  end
+
+  describe "#has_comments?" do
+    it "returns true if user has comments" do
+      @new_user = User.create!(name: "Christopher", email: "this@cool.com", password: "blochead", password_confirmation: "blochead")
+      @new_topic = Topic.create!(name: "Test topic", public: true, description: "This is a cool topic")
+      @new_post = Post.create!(title: "This is a great title", body: "This is really the best title I have ever seen!", user_id: @new_user.id, topic_id: @new_topic.id, rank: 0.0)
+      @new_comment = Comment.create!(body: "This is a great comment I like to use often!", post_id: @new_post.id, user_id: @new_user.id)
+
+      expect(@new_user.has_comments?).to be(true)
+
+    end
+  end
+
 end

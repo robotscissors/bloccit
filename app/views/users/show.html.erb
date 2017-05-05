@@ -11,11 +11,16 @@
          </div>
        <% end %>
        <div class="media-body">
+         <% if (@user.has_posts? && @user.has_comments?) %>
          <h2 class="media-heading"><%= @user.name %></h2>
          <small>
            <%= pluralize(@user.posts.count, 'post') %>,
            <%= pluralize(@user.comments.count, 'comment') %>
          </small>
+         <% else %>
+            <h2 class="media-heading"><%= "#{@user.name} has not submitted any posts yet." %></h2>
+         <% end %>
+         <h2>
        </div>
      </div>
    </div>

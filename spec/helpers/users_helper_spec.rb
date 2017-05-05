@@ -1,15 +1,11 @@
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the UsersHelper. For example:
-#
-# describe UsersHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
 RSpec.describe UsersHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+    # let(:new_topic) { create(:topic) }
+    # let(:new_user) { create(:user) }
+    # let(:new_post) { create(:post, topic: new_topic, user: new_user) }
+    # let(:new_comment) {create(:comment, post: new_post, user: new_user)}
+
+
 end
