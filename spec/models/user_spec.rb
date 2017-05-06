@@ -119,15 +119,32 @@ RSpec.describe User, type: :model do
   end
 
   describe "#has_comments?" do
-    it "returns true if user has comments" do
+    it "returns true if user has posts" do
       @new_user = User.create!(name: "Christopher", email: "this@cool.com", password: "blochead", password_confirmation: "blochead")
       @new_topic = Topic.create!(name: "Test topic", public: true, description: "This is a cool topic")
       @new_post = Post.create!(title: "This is a great title", body: "This is really the best title I have ever seen!", user_id: @new_user.id, topic_id: @new_topic.id, rank: 0.0)
       @new_comment = Comment.create!(body: "This is a great comment I like to use often!", post_id: @new_post.id, user_id: @new_user.id)
-
-      expect(@new_user.has_comments?).to be(true)
+      expect(@new_user.has_posts?).to be(true)
 
     end
+    it "returns false if user has no comments" do
+      @new_user = User.create!(name: "Christopher", email: "this@cool.com", password: "blochead", password_confirmation: "blochead")
+      @new_topic = Topic.create!(name: "Test topic", public: true, description: "This is a cool topic")
+      @new_post = Post.create!(title: "This is a great title", body: "This is really the best title I have ever seen!", user_id: @new_user.id, topic_id: @new_topic.id, rank: 0.0)
+      #@new_comment = Comment.create!(body: "This is a great comment I like to use often!", post_id: @new_post.id, user_id: @new_user.id)
+      expect(@new_user.has_comments?).to be(false)
+    end
+  end
+
+  describe "#has favorited posts" do
+    it "returns true for posts" do
+      @new_user = User.create!(name: "Christopher", email: "this@cool.com", password: "blochead", password_confirmation: "blochead")
+      @new_topic = Topic.create!(name: "Test topic", public: true, description: "This is a cool topic")
+      @new_post = Post.create!(title: "This is a great title", body: "This is really the best title I have ever seen!", user_id: @new_user.id, topic_id: @new_topic.id, rank: 0.0)
+      @favorited = Favorite.create!(post: @new_post, user: @new_user)
+      expect(@new_user.list_favorites).not_to be_nil
+    end
+
   end
 
 end

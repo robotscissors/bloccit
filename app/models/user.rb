@@ -28,11 +28,13 @@ class User < ActiveRecord::Base
   end
 
   def has_posts?
-    true if posts.where(user_id: self).first
+    self.posts.count > 0 ? true : false
   end
 
   def has_comments?
-    true if comments.where(user_id: self).first
+    self.comments.count > 0 ? true : false
   end
+
+
 
 end
