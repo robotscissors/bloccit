@@ -35,6 +35,8 @@ class User < ActiveRecord::Base
     self.comments.count > 0 ? true : false
   end
 
-
+  def favorited_posts
+    Post.joins(favorites: :user).where(favorites: {user_id: self.id})
+  end
 
 end

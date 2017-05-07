@@ -142,7 +142,41 @@ RSpec.describe User, type: :model do
       @new_topic = Topic.create!(name: "Test topic", public: true, description: "This is a cool topic")
       @new_post = Post.create!(title: "This is a great title", body: "This is really the best title I have ever seen!", user_id: @new_user.id, topic_id: @new_topic.id, rank: 0.0)
       @favorited = Favorite.create!(post: @new_post, user: @new_user)
-      expect(@new_user.list_favorites).not_to be_nil
+      expect(@new_user.favorited_posts).not_to be_nil
+    end
+    it "returns empty for no posts" do
+      @new_user = User.create!(name: "Christopher", email: "this@cool.com", password: "blochead", password_confirmation: "blochead")
+      @new_topic = Topic.create!(name: "Test topic", public: true, description: "This is a cool topic")
+      @new_post = Post.create!(title: "This is a great title", body: "This is really the best title I have ever seen!", user_id: @new_user.id, topic_id: @new_topic.id, rank: 0.0)
+      #@favorited = Favorite.create!(post: @new_post, user: @new_user)
+      #expect(@new_user.favorited_posts).to be_falsey
+      expect(@new_user.favorited_posts).to be_empty
+
+    end
+
+    it "returns one record" do
+      @new_user = User.create!(name: "Christopher", email: "this@cool.com", password: "blochead", password_confirmation: "blochead")
+      @new_topic = Topic.create!(name: "Test topic", public: true, description: "This is a cool topic")
+      @new_post = Post.create!(title: "This is a great title", body: "This is really the best title I have ever seen!", user_id: @new_user.id, topic_id: @new_topic.id, rank: 0.0)
+      @favorited = Favorite.create!(post: @new_post, user: @new_user)
+      expect(@new_user.favorited_posts.count).to eq(1)
+    end
+
+    it "returns title" do
+      @new_user = User.create!(name: "Christopher", email: "this@cool.com", password: "blochead", password_confirmation: "blochead")
+      @new_topic = Topic.create!(name: "Test topic", public: true, description: "This is a cool topic")
+      @new_post = Post.create!(title: "This is a great title", body: "This is really the best title I have ever seen!", user_id: @new_user.id, topic_id: @new_topic.id, rank: 0.0)
+      @favorited = Favorite.create!(post: @new_post, user: @new_user)
+      expect(@new_user.favorited_posts[0]).to have_attributes(title: "This is a great title")
+    end
+
+    it "returns vote count" do
+      @new_user = User.create!(name: "Christopher", email: "this@cool.com", password: "blochead", password_confirmation: "blochead")
+      @new_topic = Topic.create!(name: "Test topic", public: true, description: "This is a cool topic")
+      @new_post = Post.create!(title: "This is a great title", body: "This is really the best title I have ever seen!", user_id: @new_user.id, topic_id: @new_topic.id, rank: 0.0)
+      @favorited = Favorite.create!(post: @new_post, user: @new_user)
+      @vote = Vote.create!(value: 1, post: @new_post, user: @new_user)
+      expect(@new_user.favorited_posts[0].points).to eq(1)
     end
 
   end

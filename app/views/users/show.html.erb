@@ -37,6 +37,6 @@
 <% if @favorited_posts %>
    <h2>Posts Favorited</h2>
    <% @favorited_posts.each do |t| %>
-      <%= "Author ID: ?? - POST ID: #{t.post_id}"%><br />
+      <%= render(:partial => 'user_favorites', :locals => {:fav_post => t}) %>
    <% end %>
 <% end %>
